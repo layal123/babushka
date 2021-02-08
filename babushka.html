@@ -12,7 +12,7 @@
 
         section {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
             margin-left: 20vw;
             margin-right: 20vw;
         }
@@ -36,26 +36,51 @@
         }
 
         h2 {
-            font-size: 2rem;
+            font-size: 1.5rem;
             text-align: center;
             text-transform: uppercase;
         }
 
         h3 {
-            font-size: 1.65rem;
+            font-size: 1.2rem;
             text-align: center;
         }
 
         h4 {
-            font-size: 1.65rem;
+            font-size: 1.2rem;
             text-align: center;
+        }
+
+        nav {
+            text-align: center;
+        }
+
+        button {
+            font-size: 1.3rem;
+            margin-left: 0.5vw;
+            margin-right: 0.5vw;
+            margin-bottom: 1vw;
+            box-shadow: 3.1px 3px 3.7px 2.9px rgba(0, 0, 0, 0.74);
+        }
+
+        .valgt {
+            background-color: antiquewhite;
+            box-shadow: 0px 0px 0px 0px rgba(0, 0, 0, 0);
         }
 
     </style>
 </head>
 
 <body>
-    <h1>Babushka</h1>
+    <h1>Alle</h1>
+    <nav>
+        <button data-kategori="alle" class="valgt">Alle</button>
+        <button data-kategori="forretter">Forretter</button>
+        <button data-kategori="hovedretter">Hovedretter</button>
+        <button data-kategori="desserter">Desserter</button>
+        <button data-kategori="sideorders">Sideorders</button>
+        <button data-kategori="drikkevarer">Drikkevarer</button>
+    </nav>
     <section>
 
     </section>
@@ -70,33 +95,57 @@
 
     <script>
         const url = "https://babushka-dd8a.restdb.io/rest/menu";
-        //        const medieurl = "https://persongalleri-5d3e.restdb.io/media/"
+        const medieurl = "https://babushka-dd8a.restdb.io/media/";
 
         const options = {
             headers: {
                 'x-apikey': "600ec2fb1346a1524ff12de4"
             }
         };
+        const header = document.querySelector("h1");
 
-        async function hentData() {
+        document.addEventListener("DOMContentLoaded", start);
+        let retter;
+        let filter = "alle";
 
-            const respons = await fetch(url, options);
-            const json = await respons.json();
-            vis(json);
+        function start() {
+            const filterKnapper = document.querySelectorAll("nav button");
+            filterKnapper.forEach(knap => knap.addEventListener("click", filtrerRetter));
+            hentData();
         }
 
-        const container = document.querySelector("section");
-        const temp = document.querySelector("template").content;
+        function filtrerRetter() {
+            filter = this.dataset.kategori;
+            document.querySelector(".valgt").classList.remove("valgt");
+            this.classList.add("valgt");
+            header.textContent = this.textContent;
+            visRetter();
+        }
 
-        function vis(json) {
-            console.log(json);
-            json.forEach(mad => {
-                const klon = temp.cloneNode(true);
-                //                klon.querySelector(".billede").src = medieurl + mad.billede;
-                klon.querySelector(".navn").textContent = mad.navn;
-                klon.querySelector(".kort_beskrivelse").textContent = mad.kortbeskrivelse;
-                klon.querySelector(".pris").textContent = (`pris: ${mad.pris}`);
-                container.appendChild(klon);
+
+        async function hentData() {
+            const respons = await fetch(url, options);
+            retter = await respons.json();
+            visRetter();
+        }
+
+
+        function visRetter() {
+
+            const container = document.querySelector("section");
+            const temp = document.querySelector("template").content;
+
+            container.textContent = "";
+
+            retter.forEach(mad => {
+                if (filter == mad.kategori || filter == "alle") {
+                    const klon = temp.cloneNode(true);
+                    klon.querySelector(".billede").src = medieurl + mad.billede;
+                    klon.querySelector(".navn").textContent = mad.navn;
+                    klon.querySelector(".kort_beskrivelse").textContent = mad.kortbeskrivelse;
+                    klon.querySelector(".pris").textContent = (`Pris: ${mad.pris}`);
+                    container.appendChild(klon);
+                }
             })
         }
 
