@@ -4,47 +4,98 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title></title>
-    <link rel="stylesheet" href="">
+    <title>Babushka</title>
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
             padding: 0;
         }
 
+        body {}
+
+        h1 {
+            font-family: 'Roboto', sans-serif;
+            font-weight: normal;
+            text-align: center;
+            font-size: 3rem;
+            text-transform: uppercase;
+            background-color: #F2DDD0;
+            padding-top: 4vw;
+            padding-bottom: 4vw;
+            margin: 0;
+        }
+
         h2,
         h3,
-        h4 {
-            padding: 1vw;
+        h4,
+        h5 {
+            padding: 0vw 0vw 3vw 0vw;
+            font-family: 'Roboto', sans-serif;
+            font-weight: normal;
+        }
+
+        h3 {
+            font-size: 1rem;
+            line-height: 1.5rem;
+        }
+
+        h2 {
+            font-family: 'Roboto', sans-serif;
+            font-weight: 450;
+            text-transform: uppercase;
         }
 
         h4 {
             font-size: 1.2rem;
         }
 
+        h5 {
+            text-transform: uppercase;
+        }
+
         button {
-            padding: 0.5vw;
-            font-size: 1.1rem;
+            padding: 0.5vw 5vw 0.5vw 5vw;
+            font-size: 1rem;
             cursor: pointer;
+            background-color: #F2DDD0;
+            border-radius: 8px;
+            text-transform: uppercase;
+            border: none;
         }
 
         article {
-            text-align: center;
+            display: flex;
             width: 50vw;
-            margin-right: auto;
-            margin-left: auto;
+            margin: 4vw auto auto auto;
+        }
+
+        img {
+            height: 30vw;
+            width: 22vw;
+            object-fit: cover;
+        }
+
+        .hoejre {
+            display: inline-block;
+            margin-left: 2.5vw;
         }
 
     </style>
 </head>
 
 <body>
+    <h1>babushka</h1>
     <article class="mad">
         <img src="" alt="" class="billede">
-        <h2 class="navn"></h2>
-        <h3 class="lang_beskrivelse"></h3>
-        <h4 class="pris"></h4>
-        <button>Tilbage</button>
+        <div class="hoejre">
+            <h5 class="kategori"></h5>
+            <h2 class="navn"></h2>
+            <h3 class="lang_beskrivelse"></h3>
+            <h4 class="pris"></h4>
+            <button>Tilbage</button>
+        </div>
     </article>
     <script>
         const urlParams = new URLSearchParams(window.location.search);
@@ -70,6 +121,7 @@
         }
 
         function visRet() {
+            document.querySelector(".kategori").textContent = ret.kategori;
             document.querySelector(".navn").textContent = ret.navn;
             document.querySelector(".lang_beskrivelse").textContent = ret.langbeskrivelse;
             document.querySelector(".pris").textContent = (`Pris: ${ret.pris},-`);
